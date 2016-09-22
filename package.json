@@ -1,0 +1,20 @@
+{
+  "name": "thumbnails",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "gm": "^1.23.0",
+    "node-windows": "^0.1.11"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.3"
+  }
+}

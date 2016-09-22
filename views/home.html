@@ -1,0 +1,105 @@
+<html>
+
+<head>
+    <title></title>
+    <script src="externs/jquery-1.12.3.js"></script>
+
+</head>
+
+<body>
+    <h1>欢迎使用图片尺寸调整服务</h1>
+    <hr>
+    <h2>使用说明</h2>
+
+    <ul>
+        <li>post地址：http://{replace-with-server-ip}:3000/resize</li>
+        <li>请一定设置 Content-Type 为 application/json</li>
+        <li>请求体需至少包括 <strong>inPath</strong> <em>{string}</em>, <strong>outPath</strong> <em>{string}</em>, <strong>width/height</strong>            <em>{string|number}</em> 三个参数 <br> 分别代表：输入图片路径，输出图片路径，调整后的宽度/高度 </li>
+        <li>额外的可选参数为 <strong>height/width</strong> <em>{string|number}</em>, <strong>aspectRatio</strong> <em>{string}</em> <br>            分别代表：宽度，是否维持原图横纵比(若为
+            <code>'!'</code>，则代表不考虑横纵比，完全满足宽度和高度参数的数值) </li>
+        <li>
+            <p>几个json对象示例：</p>
+            <p><strong>吻合宽度</strong> <br>
+                <code>{</code> <br>
+                <code>　　inPath: 'C:/beau.jpg',</code> <br>
+                <code>　　outPath: 'C:/beau-800w.jpg',</code> <br>
+                <code>　　width: 500</code> <br>
+                <code>}</code> <br>
+                <strong>吻合高度</strong> <br>
+                <code>{</code> <br>
+                <code>　　inPath: 'C:/beau.jpg',</code> <br>
+                <code>　　outPath: 'C:/beau-400h.jpg',</code> <br>
+                <code>　　height: 400</code> <br>
+                <code>}</code> <br>
+                <strong>维持横纵比，且宽度不超过700，高度不超过600</strong> <br>
+                <code>{</code> <br>
+                <code>　　inPath: 'C:/beau.jpg',</code> <br>
+                <code>　　outPath: 'C:/beau-after.jpg',</code> <br>
+                <code>　　width: 700,</code> <br>
+                <code>　　height: 600</code> <br>
+                <code>}</code> <br>
+                <strong>不考虑横纵比，完全符合 宽度700 高度600</strong> <br>
+                <code>{</code> <br>
+                <code>　　inPath: 'C:/beau.jpg',</code> <br>
+                <code>　　outPath: 'C:/beau-after.jpg',</code> <br>
+                <code>　　width: 700,</code> <br>
+                <code>　　height: 600,</code> <br>
+                <code>　　aspectRatio: '!'</code> <br>
+                <code>}</code></p>
+        </li>
+        </li>
+    </ul>
+
+    <hr />
+
+    <h2>测试用例</h2>
+    <input type="text" id="inPath" placeholder="inPath" style="width:100%;" value="C:/nodework/thumbnails/public/originals/beau.jpg"><br>
+    <input type="text" id="outPath" placeholder="outPath" style="width:100%;" value="C:/nodework/thumbnails/public/originals/beau2.jpg"><br>
+    <input type="number" id="width" placeholder="width" value="500"><br>
+    <input type="number" id="height" placeholder="height" value="300"><br>
+    <input type="text" id="aspectRatio" placeholder="aspectRatio '!'" value="">
+    <input type="button" id="postBtn" value="do post">
+    <span><strong>转换结果：</strong><span id="result">{do post to receive results}</span></span>
+    <script>
+        //console.log($);
+        var sample={
+            inPath:'C:/nodework/thumbnails/public/originals/beau.jpg',
+            outPath:'C:/nodework/thumbnails/public/thumbnails/beau-800.jpg',
+            width:'800',
+            height:800,
+            aspectRatio:'!'
+        };
+        var inPath=$('#inPath');
+        var outPath=$('#outPath');
+        var width=$('#width');
+        var height=$('#height');
+        var aspectRatio=$('#aspectRatio');
+        var postBtn=$('#postBtn');
+        var result=$('#result');
+        postBtn.click(function(){
+            console.log('go');
+            var bomb={
+                inPath:inPath.val(),
+                outPath:outPath.val(),
+                width:width.val(),
+                height:height.val(),
+                aspectRatio:aspectRatio.val()
+            }
+            $.post({
+                url:'http://localhost:3001/resize',
+                data:JSON.stringify(bomb/*sample*/),
+                contentType:'application/json',
+                success:function(answer, textStatus, jqXHR){
+                    console.log('success');
+                    console.log(arguments);
+                    result.text(JSON.stringify(answer));
+                },
+                error:function(){
+                    console.log('fail');
+                }
+            });
+        });    
+    </script>
+</body>
+
+</html>
